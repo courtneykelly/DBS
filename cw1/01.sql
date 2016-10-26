@@ -1,4 +1,5 @@
--- Query 1: Invoices issued after their due date
+-- Query 1
+-- Invoices issued after their due date
 
 SELECT *
 FROM Invoices I
