@@ -5,6 +5,6 @@
 
 SELECT I.invid, I.issued, I.ordid, O.odate
 FROM Invoices I, Orders O 
-WHERE I.ordid = O.ordid AND I.issued < O.odate
+WHERE I.ordid = O.ordid AND I.issued::date < O.odate::date
 
 ;
