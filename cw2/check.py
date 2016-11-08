@@ -27,18 +27,17 @@ def mark(wrong, correct, percent):
     if wrong > 0:
         return 0
     if percent == 100:
-        return 2
-    elif percent >= 50:
         return 1
+    else:
+        return 0
 
-def check(solution,candidate):
+def check(solution, candidate):
     sol = Counter(solution)
     ans = Counter(candidate)
     tot_sol = sum(sol.itervalues())
     tot_ans = sum(ans.itervalues())
-    sol.subtract(ans)
-    correct = len([ x for x in sol.itervalues() if x==0 ])
-    wrong   = len([ x for x in sol.itervalues() if x<0  ])
+    correct = sum((sol & ans).itervalues())
+    wrong   = sum((ans - sol).itervalues())
     percent = 100.00;
     if tot_sol > 0:
         percent = round( float(correct)*100 / float(tot_sol), 2 )
