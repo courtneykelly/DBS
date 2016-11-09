@@ -4,19 +4,42 @@
 -- customers are tied for a specific product type they will all be included in the output. If no products of
 -- a specific type have ever been ordered, that type will not be in the output.
 
---SELECT s1.ptype, MAX(s1.MaxOfEachOrder)
---FROM (	SELECT P.ptype, O.ocust, MAX(D.qty) AS MaxOfEachOrder
---		FROM Products P, Orders O JOIN Details D ON O.ordid = D.ordid
---		WHERE O.ordid = D.ordid AND D.pcode = P.pcode
---		GROUP BY P.ptype, O.ocust ) s1 
---GROUP BY s1.ptype2
+SELECT OJ.ptype, OJ.ocust
+FROM (	SELECT O.ocust, PD.ptype, SUM(PD.NumProductsInOrder) AS NumProductsPerCustomer
+		FROM Orders O 	
+		JOIN (	SELECT D.ordid, P.ptype, SUM(D.qty) AS NumProductsInOrder
+				FROM Details D 	
+				JOIN Products P 
+				ON D.pcode = P.pcode 
+				GROUP BY D.ordid, P.ptype) PD 
 
-SELECT s3.ptype, s2.ocust
-FROM (	SELECT s2.ptype, MAX(max)
-		FROM (	SELECT P2.ptype, s1.ocust, SUM(s1.sum) as max 
-				FROM (	SELECT P.pcode, O.ocust, SUM(D.qty) as sum 
-						FROM Products P, Orders O JOIN Details D ON O.ordid = D.ordid
-						WHERE D.pcode = P.pcode
-						GROUP BY P.pcode, O.ocust ) s1 JOIN Products P2 ON s1.pcode = P2.pcode
-				GROUP BY P2.ptype, s1.ocust ) s2
-		GROUP BY s2.ptype ) s3
+		ON O.ordid = PD.ordid
+		GROUP BY O.ocust, PD.ptype ) OJ
+
+INNER JOIN (	SELECT  OPD.ptype, MAX(OPD.NumProductsPerCustomer) AS MaxProductsByType
+				FROM (	SELECT O.ocust, PD.ptype, SUM(PD.NumProductsInOrder) AS NumProductsPerCustomer
+						FROM Orders O 	
+						JOIN (	SELECT D.ordid, P.ptype, SUM(D.qty) AS NumProductsInOrder
+								FROM Details D 	
+								JOIN Products P 
+								ON D.pcode = P.pcode 
+								GROUP BY D.ordid, P.ptype) PD 
+
+						ON O.ordid = PD.ordid
+						GROUP BY O.ocust, PD.ptype ) OPD
+				
+				GROUP BY OPD.ptype ) IJ
+
+ON OJ.ptype = IJ.ptype AND OJ.NumProductsPerCustomer = IJ.MaxProductsByType
+
+
+;
+
+
+
+
+
+
+
+
+

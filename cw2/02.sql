@@ -11,3 +11,4 @@ FROM (	SELECT D.ordid, P.ptype, SUM(D.qty) AS sum
 		GROUP BY D.ordid, P.ptype ) s1
 GROUP BY s1.ptype
 
+;
