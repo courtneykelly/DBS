@@ -5,7 +5,8 @@
 	an order has a detail or not is irrelevant. Return the customer ID only.
 */
 
-SELECT OCO.ocust
+
+SELECT OCO.ocust, AVG(DaysBetweenNextOrder)
 FROM (	SELECT O.ocust, O.ordid, MIN(CO.odate - O.odate) as DaysBetweenNextOrder
 		FROM  Orders O , (	SELECT C.custid, O.odate
 							FROM Customers C JOIN Orders O ON C.custid = O.ocust
@@ -20,4 +21,16 @@ HAVING AVG(DaysBetweenNextOrder) < 30
 ORDER BY OCO.ocust
 
 
+/*
+SELECT O.ocust, O.ordid, O.odate, CO.ordid, CO.odate, CO.odate - O.odate as DaysBetweenNextOrder
+FROM  Orders O , (	SELECT C.custid, O.odate, O.ordid
+					FROM Customers C JOIN Orders O ON C.custid = O.ocust
+					WHERE C.custid IN (	SELECT O.ocust
+										FROM Orders O
+										GROUP BY O.ocust
+										HAVING (COUNT( DISTINCT O.odate ) >= 5)) ) CO			
+WHERE O.ocust = CO.custid AND (CO.odate - O.odate) > 0 AND O.ocust = 4
+GROUP BY O.ocust, O.ordid, CO.odate, CO.ordid
+ORDER BY O.ordid
+*/
 ;

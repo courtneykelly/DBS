@@ -6,16 +6,23 @@
 	the corresponding interval (which will be an integer).
 */
 
-SELECT OCO.ocust, MAX(DaysBetweenNextOrder) AS MaxDaysBetweenOrders
-FROM (	SELECT O.ocust, O.ordid, MIN(CO.odate - O.odate) as DaysBetweenNextOrder
-		FROM  Orders O , (	SELECT C.custid, O.odate, O.ordid
-							FROM Customers C JOIN Orders O ON C.custid = O.ocust
-							WHERE C.custid IN (	SELECT O.ocust
-												FROM Orders O
-												GROUP BY O.ocust
-												HAVING COUNT( DISTINCT O.ordid ) >= 2 ) ) CO			
-		WHERE O.ocust = CO.custid AND (CO.odate - O.odate) >= 0 AND O.ordid <> CO.ordid
-		GROUP BY O.ocust, O.ordid ) OCO
-GROUP BY OCO.ocust
+
+SELECT *
+FROM (	SELECT OCO.ocust, MAX(DaysBetweenNextOrder) AS MaxDaysBetweenOrders
+		FROM (	SELECT O.ocust, O.ordid, MIN(CO.odate - O.odate) as DaysBetweenNextOrder
+				FROM  Orders O , (	SELECT C.custid, O.odate
+									FROM Customers C JOIN Orders O ON C.custid = O.ocust
+									WHERE C.custid IN (	SELECT C.custid
+														FROM Customers C JOIN Orders O ON C.custid = O.ocust
+														GROUP BY C.custid
+														HAVING COUNT( DISTINCT O.ordid ) >= 2 ) ) CO			
+				WHERE O.ocust = CO.custid AND (CO.odate - O.odate) > 0
+				GROUP BY O.ocust, O.ordid ) OCO
+		GROUP BY OCO.ocust ) RJ
+FULL JOIN (	SELECT C.custid
+			FROM Customers C JOIN Orders O ON C.custid = O.ocust
+			GROUP BY C.custid
+			HAVING COUNT( DISTINCT O.ordid ) >= 2 ) LJ
+ON RJ.ocust = LJ.custid
 
 ;
