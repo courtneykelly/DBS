@@ -28,4 +28,4 @@ with comments consisting of directives for datafiller to generate more realistic
 
 10. For each order without invoice, list its ID, the date it was placed and the total price of the products in its detail, taking into account the quantity of each ordered product and its unit price. Orders without detail must not be included in the answers.
 
-
+EOF
