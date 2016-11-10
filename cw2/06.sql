@@ -6,8 +6,7 @@ SELECT OPD.type, COUNT(OPD.ordid)
 FROM (	SELECT O.ordid, (array_agg(PD.ptype))[1] AS type
 		FROM Orders O 	
 		JOIN (	SELECT D.ordid, P.ptype
-				FROM Details D 	
-				JOIN Products P 
+				FROM Details D JOIN Products P 
 				ON D.pcode = P.pcode ) PD 
 
 		ON O.ordid = PD.ordid 

@@ -11,8 +11,7 @@ FROM Customers C
 LEFT JOIN (	SELECT O.ocust, O.ordid, COALESCE(PD.OrderCost,0) AS OrderCost
 			FROM Orders O 	
 			LEFT JOIN (	SELECT D.ordid, SUM(D.qty*P.price) AS OrderCost
-						FROM Details D 	
-						JOIN Products P 
+						FROM Details D JOIN Products P 
 						ON D.pcode = P.pcode
 						GROUP BY D.ordid ) PD 
 
