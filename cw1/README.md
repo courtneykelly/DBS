@@ -22,9 +22,10 @@ with comments consisting of directives for datafiller to generate more realistic
 
 7. Products that were ordered more than 10 times in total, by taking into account the quantities in which they appear in the order details. Return the product code and the total number of times it was ordered.
 
-8. Products that are usually ordered in bulk: whenever one of these products is ordered, it is ordered in a quantity that on average is equal to or greater than 8. For each such product, return product code
-and price.
+8. Products that are usually ordered in bulk: whenever one of these products is ordered, it is ordered in a quantity that on average is equal to or greater than 8. For each such product, return product code and price.
 
 9. Total number of orders placed in 2016 by customers of each country. If all customers from a specific country did not place any orders in 2016, the country will not appear in the output.
 
 10. For each order without invoice, list its ID, the date it was placed and the total price of the products in its detail, taking into account the quantity of each ordered product and its unit price. Orders without detail must not be included in the answers.
+
+
