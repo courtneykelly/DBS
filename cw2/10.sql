@@ -7,7 +7,7 @@
 
 
 SELECT OCO.ocust, AVG(DaysBetweenNextOrder)
-FROM (	SELECT O.ocust, O.ordid, MIN(CO.odate - O.odate) as DaysBetweenNextOrder
+FROM (	SELECT O.ocust, MIN(CO.odate - O.odate) as DaysBetweenNextOrder
 		FROM  Orders O , (	SELECT C.custid, O.odate
 							FROM Customers C JOIN Orders O ON C.custid = O.ocust
 							WHERE C.custid IN (	SELECT O.ocust

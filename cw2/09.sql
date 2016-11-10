@@ -7,7 +7,7 @@
 */
 
 
-SELECT *
+SELECT COALESCE(RJ.ocust, LJ.custid), COALESCE(RJ.MaxDaysBetweenOrders,0)
 FROM (	SELECT OCO.ocust, MAX(DaysBetweenNextOrder) AS MaxDaysBetweenOrders
 		FROM (	SELECT O.ocust, O.ordid, MIN(CO.odate - O.odate) as DaysBetweenNextOrder
 				FROM  Orders O , (	SELECT C.custid, O.odate
