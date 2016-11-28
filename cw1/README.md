@@ -8,6 +8,7 @@ where `<dbshome>` is `/afs/inf.ed.ac.uk/group/teaching/dbs`. This is a slight va
 with comments consisting of directives for datafiller to generate more realistic-looking test data. These directives will be completely ignored by the DBMS and do not in any way constrain the database.
 
 **Assignment** Write the following queries in SQL
+
 1. Invoices issued after their due date. Return all attributes
 
 2. Invoices that were issued before the date in which the order they refer to was placed. Return the ID of the invoice, the date it was issued, the ID of the order associated with it and the date the order was placed.
@@ -28,4 +29,4 @@ with comments consisting of directives for datafiller to generate more realistic
 
 10. For each order without invoice, list its ID, the date it was placed and the total price of the products in its detail, taking into account the quantity of each ordered product and its unit price. Orders without detail must not be included in the answers.
 
-EOF
+
